@@ -70,17 +70,17 @@ const MainTabNavigator = () => (
 );
 
 const App = () => {
-  const showOnboarding = false;
+  const showOnboarding = true;
 
   return (
     <NavigationContainer>
       <Stack.Navigator>
         {showOnboarding ? (
-          <Stack.Screen name="Onboarding" component={OnboardingScreen} />
+          <Stack.Screen name="Onboarding" component={OnboardingScreen} options={{ headerShown: false }} />
         ) : (
           <Stack.Screen
-            name="MainTabNavigator"
-            component={MainTabNavigator}
+            name="Dashboard"
+            component={DashboardScreen}
             options={{ headerShown: false }}
           />
         )}

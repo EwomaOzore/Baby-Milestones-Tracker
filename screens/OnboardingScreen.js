@@ -11,12 +11,13 @@ const OnboardingScreen = () => {
     const navigation = useNavigation();
 
     const handleDone = () => {
-        navigation.navigate('MainTabNavigatorScreen');
+        navigation.navigate('DashboardScreen');
     };
 
     return (
         <View className="flex-1">
             <Onboarding
+                options={{ headerShown: false }}
                 onDone={handleDone}
                 onSkip={handleDone}
                 bottomBarHighlight={false}
