@@ -35,7 +35,7 @@ const MilestoneForm = ({ editMilestone }) => {
 
     return (
         <View className="p-4">
-            <Text className="text-2xl font-bold mb-4">{editMilestone ? 'Edit Milestone' : 'Add Milestone'}</Text>
+            {/* <Text className="text-2xl font-bold mb-4">{editMilestone ? 'Edit Milestone' : 'Add Milestone'}</Text> */}
             <Text className="mb-2">Date:</Text>
             <TextInput
                 className="border p-2 mb-3"

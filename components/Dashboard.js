@@ -1,51 +1,112 @@
-import React from 'react';
-import { View, Text, ScrollView, Button, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, ScrollView, Button, Alert, TextInput, TouchableOpacity } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { addMilestone, updateMilestone, deleteMilestone } from '../redux/actions';
-import MilestoneForm from './MilestoneForm';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import RNPickerSelect from 'react-native-picker-select';
 
-const Dashboard = () => {
-    const milestones = useSelector((state) => state.milestones);
+const MilestoneForm = ({ onSubmit, onCancel }) => {
+    const [formData, setFormData] = useState({
+        date: new Date(),
+        milestoneType: '',
+        notes: '',
+    });
+
     const dispatch = useDispatch();
+    const [showDatePicker, setShowDatePicker] = useState(false);
 
-    const handleEditMilestone = (milestone) => {
-        // Set up your editing logic
+    const handleDateChange = (event, date) => {
+        setShowDatePicker(false);
+        if (date) {
+            setFormData({ ...formData, date });
+        }
     };
 
-    const handleDeleteMilestone = (milestone) => {
-        Alert.alert('Delete Milestone', 'Are you sure you want to delete this milestone?', [
-            {
-                text: 'Cancel',
-                style: 'cancel',
-            },
-            {
-                text: 'Delete',
-                onPress: () => dispatch(deleteMilestone(milestone)),
-            },
-        ]);
+    const handleMilestoneTypeChange = (milestoneType) => {
+        setFormData({ ...formData, milestoneType });
+    };
+
+    const handleNotesChange = (notes) => {
+        setFormData({ ...formData, notes });
+    };
+
+    const handleSubmit = () => {
+        onSubmit(formData);
+        setFormData({
+            date: new Date(),
+            milestoneType: '',
+            notes: '',
+        });
     };
 
     return (
-        <View className=" bg-white p-4">
-            <Text className="text-2xl font-bold mb-4">Baby Milestones Dashboard</Text>
-            <MilestoneForm />
-            <ScrollView className="mt-4">
-                {milestones.length === 0 ? (
-                    <Text>No milestones yet.</Text>
-                ) : (
-                    milestones.map((milestone, index) => (
-                        <View key={index} className="border p-3 mb-3">
-                            <Text>Date: {milestone.date}</Text>
-                            <Text>Milestone Type: {milestone.milestoneType}</Text>
-                            <Text>Notes: {milestone.notes}</Text>
-                            <Button title="Edit" onPress={() => handleEditMilestone(milestone)} />
-                            <Button title="Delete" onPress={() => handleDeleteMilestone(milestone)} />
-                        </View>
-                    ))
+        <ScrollView className="p-5">
+            <Text className="text-2xl font-bold mb-2 text-gray-800 text-center">Add New Milestone</Text>
+
+            <View className="flex-row bg-white p-3 items-center rounded-xl mb-5">
+                <Button title="Pick a date" onPress={() => setShowDatePicker(true)} />
+                {showDatePicker && (
+                    <DateTimePicker
+                        value={formData.date}
+                        mode="date"
+                        is24Hour={true}
+                        display="default"
+                        onChange={handleDateChange}
+                    />
                 )}
-            </ScrollView>
-        </View>
+            </View>
+
+            {/* Milestone Type Dropdown */}
+            <View className="flex-row bg-white p-3 items-center rounded-xl mb-5">
+                <Text className="text-lg mb-2 text-gray-700 mr-32">Milestone Type</Text>
+                <RNPickerSelect
+                    onValueChange={handleMilestoneTypeChange}
+                    items={[
+                        { label: 'Physical', value: 'physical' },
+                        { label: 'Feeding', value: 'feeding' },
+                        { label: 'Health', value: 'health' },
+                        { label: 'Sleep', value: 'sleep' },
+                        { label: 'Cognitive', value: 'cognitive' },
+                        { label: 'Social', value: 'social' },
+                        { label: 'Emotional', value: 'emotional' },
+                        { label: 'Language', value: 'language' },
+                        { label: 'Other', value: 'other' },
+                    ]}
+                />
+            </View>
+
+
+            {/* Notes Input */}
+            <View className="bg-white p-3 items-center rounded-xl mb-5">
+                <Text className="text-lg mb-2 text-gray-700">Notes</Text>
+                <TextInput
+                    value={formData.notes}
+                    onChangeText={handleNotesChange}
+                    style={{
+                        width: '100%',
+                        height: 70,
+                        borderColor: '#ccc',
+                        borderWidth: 1,
+                        borderRadius: 5,
+                        marginBottom: 10,
+                        padding: 8,
+                    }}
+                    placeholder="Enter notes ...."
+                    multiline
+                />
+            </View>
+
+            {/* Submit and Cancel Buttons */}
+            <View className="flex-row w-full justify-between px-7">
+                <TouchableOpacity className="bg-slate-800 rounded-xl px-10 py-2">
+                    <Button title="Submit" onPress={handleSubmit} />
+                </TouchableOpacity>
+                <TouchableOpacity className="bg-slate-800 rounded-xl px-10 py-2">
+                    <Button title="Cancel" onPress={onCancel} />
+                </TouchableOpacity>
+            </View>
+        </ScrollView>
     );
 };
 
-export default Dashboard;
+export default MilestoneForm;

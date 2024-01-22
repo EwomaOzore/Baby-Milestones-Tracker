@@ -40,7 +40,7 @@ const MilestonesScreen = () => {
 
     const renderMilestoneSection = (sectionTitle, sectionMilestones) => (
         <View className="mb-4">
-            <Text className="text-lg font-bold mb-2">{sectionTitle}</Text>
+            <Text className="text-lg font-bold mb-2 text-center">{sectionTitle}</Text>
             <FlatList
                 data={sectionMilestones}
                 keyExtractor={(item) => item.id}
@@ -61,7 +61,7 @@ const MilestonesScreen = () => {
 
     return (
         <View className="p-4">
-            <Text className="text-2xl font-bold mb-4">Baby Milestones</Text>
+            <Text className="text-2xl font-bold mb-4 text-center">Baby Milestones</Text>
             {renderMilestoneSection('Completed', groupedMilestones.completed)}
             {renderMilestoneSection('Ongoing', groupedMilestones.ongoing)}
             {renderMilestoneSection('Not Started', groupedMilestones.notStarted)}
