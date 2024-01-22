@@ -4,14 +4,15 @@ import Onboarding from 'react-native-onboarding-swiper';
 import LottieView from 'lottie-react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const { width, height } = Dimensions.get('window')
+
+const { width } = Dimensions.get('window');
 
 const OnboardingScreen = () => {
     const navigation = useNavigation();
 
     const handleDone = () => {
-        navigation.navigate('MainTabNavigator');
-    }
+        navigation.navigate('MainTabNavigatorScreen');
+    };
 
     return (
         <View className="flex-1">
